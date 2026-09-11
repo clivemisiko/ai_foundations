@@ -26,7 +26,9 @@ except Exception as e:
 # Check Kaggle library
 try:
     import kaggle
-    print('4. Kaggle Tooling: Verified (library installed and CLI ready)')
+    kaggle.api.authenticate()
+    kaggle.api.dataset_list(search="titanic")
+    print('4. Kaggle Tooling: Verified (authenticated and API call succeeded)')
 except Exception as e:
     print(f'4. Kaggle Tooling: Error ({e})')
 
