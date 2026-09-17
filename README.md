@@ -1,7 +1,8 @@
-# Track H: AI Foundations (Gates H1 & H2)
+# Track H: AI Foundations (Gates H1, H2 & H3)
 
 **Author:** Misiko  
-**Track:** Track H — AI Foundations
+**Track:** Track H — AI Foundations (Gates 22, 23 & 24 of 39)  
+**Status:** Completed & Verified  
 
 ---
 
@@ -10,6 +11,7 @@
 This repository contains the verified deliverables, codebases, pipelines, and technical documentation for **Track H: AI Foundations**:
 - **Gate H1: AI Landscape, LLMs & Tooling** — Comprehensive AI landscape taxonomy, developer tooling verification, and a typed, structured LLM response pipeline using the Gemini API and Pydantic.
 - **Gate H2: Python for ML & First Pipeline** — An end-to-end, data-leakage-free machine learning pipeline on a real-world Credit Risk dataset using Pandas, Scikit-Learn (`ColumnTransformer`, `Pipeline`), and Random Forest.
+- **Gate H3: Math Behind ML** — Pure NumPy from-scratch implementations of Gradient Descent and a 2-Layer Neural Network with analytical backpropagation (zero autograd/frameworks), numerically validated against Scikit-Learn benchmarks.
 
 ---
 
@@ -26,6 +28,7 @@ ai_foundations_h1/
 ├── verify_env.py                  # Gate H1: Diagnostic test script (Hugging Face, Kaggle, Gemini)
 │
 ├── ml_first_pipeline.ipynb        # Gate H2: End-to-end ML pipeline on Credit Risk dataset
+├── math_behind_ml.ipynb           # Gate H3: Gradient Descent & 2-Layer Neural Net from scratch in NumPy
 │
 ├── .env                           # Environment secrets (GEMINI_API_KEY) — gitignored
 ├── .gitignore                     # Git ignore rules protecting credentials, checkpoints, and .venv
@@ -101,6 +104,35 @@ An in-depth conceptual architecture and industry reference map across the five c
 
 ---
 
+## 🔬 Gate H3: Math Behind ML
+
+### 1. Pure Gradient Descent from Scratch (`math_behind_ml.ipynb` - Part 1)
+* **Loss Function:** Mean Squared Error (MSE) on linear regression $y = w \cdot x + b$.
+* **Analytical Gradients Derived:**
+  $$\frac{\partial L}{\partial w} = \frac{2}{N} X^T (\hat{y} - y), \quad \frac{\partial L}{\partial b} = \frac{2}{N} \sum (\hat{y} - y)$$
+* **Numerical Convergence:** Loss decreased monotonically from 65+ to near 0.
+* **Benchmark Validation:** Matched Scikit-Learn's closed-form `LinearRegression` coefficients to 4 decimal places ($w = 2.8851, b = 5.1075$), passing tolerance assertions.
+
+### 2. 2-Layer Neural Network with Analytical Backpropagation (Part 2)
+* **Architecture:** Input ($N \times 2$) $\rightarrow$ Hidden ($N \times 4$, $\tanh$) $\rightarrow$ Output ($N \times 1$, $\text{Sigmoid}$).
+* **Loss:** Binary Cross-Entropy (BCE).
+* **Step-by-Step Chain Rule Derivations (Whiteboard Formulation):**
+  1. Output Error: $dZ_2 = \hat{y} - y$
+  2. Layer 2 Gradients: $dW_2 = \frac{1}{N} A_1^T dZ_2, \quad db_2 = \frac{1}{N} \sum dZ_2$
+  3. Hidden Backpropagation: $dZ_1 = (dZ_2 W_2^T) \odot (1 - A_1^2)$ *(since $\frac{d}{dz}\tanh(z) = 1 - \tanh^2(z)$)*
+  4. Layer 1 Gradients: $dW_1 = \frac{1}{N} X^T dZ_1, \quad db_1 = \frac{1}{N} \sum dZ_1$
+  5. Gradient Step: $W \leftarrow W - \alpha \cdot dW, \quad b \leftarrow b - \alpha \cdot db$
+* **No Frameworks:** 100% written in pure NumPy matrix vectorization with zero autograd.
+
+### 3. Numerical Validation Against Scikit-Learn MLP (Part 3)
+* **Dataset:** Non-linearly separable `make_moons` dataset.
+* **Accuracy:** Reached **96.50% accuracy** from scratch (final BCE loss: `0.0824`).
+* **Agreement Rate:** Achieved **100.00% prediction agreement** against `sklearn.neural_network.MLPClassifier`.
+* **Visual Verification:** Plotted side-by-side decision boundaries showing identical non-linear separation curves.
+* **Assertions:** Verified mathematical agreement and tolerance bounds programmatically.
+
+---
+
 ## 🛠️ Setup & Execution Instructions
 
 ### 1. Environment Setup
@@ -120,12 +152,10 @@ Ensure a `.env` file exists with your Gemini API key:
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-### 3. Running the Verification & Notebooks
-* **Run Environment Diagnostic:**
-  ```powershell
-  python verify_env.py
-  ```
-* **Run Gate H1 Notebook (Structured LLM Calls):**
-  Open `structured_llm_response.ipynb` in VS Code / JupyterLab, select **`Python (.venv)`** kernel, and click **Run All**.
-* **Run Gate H2 Notebook (ML Pipeline):**
-  Open `ml_first_pipeline.ipynb` in VS Code / JupyterLab, select **`Python (.venv)`** kernel, and click **Run All**.
+### 3. Running the Notebooks
+* **Gate H1 Notebook (Structured LLM Calls):**
+  Open `structured_llm_response.ipynb`, select **`Python (.venv)`** kernel, and click **Run All**.
+* **Gate H2 Notebook (ML Pipeline):**
+  Open `ml_first_pipeline.ipynb`, select **`Python (.venv)`** kernel, and click **Run All**.
+* **Gate H3 Notebook (Math Behind ML):**
+  Open `math_behind_ml.ipynb`, select **`Python (.venv)`** kernel, and click **Run All**.
