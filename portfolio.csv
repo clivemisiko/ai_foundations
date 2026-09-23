@@ -1,0 +1,17 @@
+Ticker,Company,Sector,Shares,Buy_Price
+AAPL,Apple Inc.,Technology,50,175.00
+MSFT,Microsoft Corp.,Technology,30,380.00
+NVDA,NVIDIA Corp.,Technology,40,95.00
+GOOGL,Alphabet Inc.,Technology,35,140.00
+JPM,JPMorgan Chase & Co.,Finance,40,180.00
+V,Visa Inc.,Finance,25,260.00
+BAC,Bank of America Corp.,Finance,150,34.00
+JNJ,Johnson & Johnson,Healthcare,30,155.00
+PFE,Pfizer Inc.,Healthcare,100,28.00
+XOM,Exxon Mobil Corp.,Energy,45,105.00
+CVX,Chevron Corp.,Energy,30,150.00
+AMZN,Amazon.com Inc.,Consumer,40,170.00
+KO,Coca-Cola Co.,Consumer,100,60.00
+MCD,McDonald's Corp.,Consumer,20,280.00
+NKE,Nike Inc.,Consumer,50,95.00
+
