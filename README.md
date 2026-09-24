@@ -1,21 +1,19 @@
-# Track H: AI Foundations (Gates H1, H2 & H3)
-# AI Foundations & Data Science (Track H: Gates H1–H3 & Track I: Gate I1)
+# AI Foundations, Data Science & Capstone (Tracks H, I & M)
 
 **Author:** Misiko  
-**Track:** Track H — AI Foundations (Gates 22, 23 & 24 of 39)  
-**Track:** Track H — AI Foundations & Track I — AI Data Science  
-**Status:** Completed & Verified  
+**Tracks:** H — AI Foundations · I — AI Data Science · M — AI Capstone  
+**Status:** H1–H3, I1 Completed & Verified · M2.1 In Progress  
 
 ---
 
 ## 📌 Repository Overview
 
-This repository contains the verified deliverables, codebases, pipelines, and technical documentation for **Track H: AI Foundations**:
 This repository contains the verified deliverables, codebases, pipelines, and technical documentation for:
 - **Gate H1: AI Landscape, LLMs & Tooling** — Comprehensive AI landscape taxonomy, developer tooling verification, and a typed, structured LLM response pipeline using the Gemini API and Pydantic.
 - **Gate H2: Python for ML & First Pipeline** — An end-to-end, data-leakage-free machine learning pipeline on a real-world Credit Risk dataset using Pandas, Scikit-Learn (`ColumnTransformer`, `Pipeline`), and Random Forest.
 - **Gate H3: Math Behind ML** — Pure NumPy from-scratch implementations of Gradient Descent and a 2-Layer Neural Network with analytical backpropagation (zero autograd/frameworks), numerically validated against Scikit-Learn benchmarks.
 - **Gate I1: EDA & Visualization** — Comprehensive univariate, bivariate, and multivariate exploratory data analysis on 9,977 e-commerce retail transactions, featuring five publication-standard visualizations and an evidence-backed executive data story.
+- **Gate M2.1: Capstone Data & Baseline** — EDA on a live 15-stock financial portfolio (real market data via yfinance), five publication charts, and a naive template-string baseline report establishing the performance floor for the Weekly Financial Briefing Generator capstone.
 
 ---
 
@@ -35,6 +33,9 @@ ai_foundations_h1/
 ├── math_behind_ml.ipynb           # Gate H3: Gradient Descent & 2-Layer Neural Net from scratch in NumPy
 │
 ├── eda_data_story.ipynb           # Gate I1: Publication EDA & Executive Data Story on Superstore Retail
+│
+├── portfolio.csv                  # Gate M2.1: Mock 15-stock portfolio spreadsheet (capstone source data)
+├── capstone_baseline.ipynb        # Gate M2.1: Portfolio EDA, 5 charts & naive baseline report generator
 │
 ├── .env                           # Environment secrets (GEMINI_API_KEY) — gitignored
 ├── .gitignore                     # Git ignore rules protecting credentials, checkpoints, and .venv
@@ -168,6 +169,75 @@ An in-depth conceptual architecture and industry reference map across the five c
 
 ---
 
+---
+
+## 🏆 Gate M2.1: Capstone Data & Baseline — Weekly Financial Briefing Generator
+
+### 1. Capstone Architecture (Full System)
+The capstone builds a **Weekly Financial Briefing Generator** that ingests a portfolio spreadsheet and live web data to produce a structured, AI-narrated financial report. Gate M2.1 establishes the data foundation and naive baseline floor.
+
+```
+[portfolio.csv]   +   [yfinance API]
+(spreadsheet)         (web source)
+       │                   │
+       └──────────┬────────┘
+                  ▼
+      [capstone_baseline.ipynb]
+       EDA → Clean → KPIs → Charts
+                  │
+                  ▼
+    [Naive Baseline: Template Report]
+      (no LLM — just numbers in text)
+```
+
+### 2. Source Data (`portfolio.csv`)
+A manually constructed 15-stock portfolio across 5 sectors, simulating an analyst's real spreadsheet:
+
+| Sector | Tickers | Rationale |
+|---|---|---|
+| Technology | AAPL, MSFT, NVDA, GOOGL | Growth-oriented allocation |
+| Finance | JPM, V, BAC | Rate-sensitive exposure |
+| Healthcare | JNJ, PFE | Defensive, low-volatility buffer |
+| Energy | XOM, CVX | Commodity and inflation hedge |
+| Consumer | AMZN, KO, MCD, NKE | Mixed growth & staples |
+
+**1 year of daily OHLCV data** fetched via `yfinance` (250 clean trading days after quality checks).
+
+### 3. Five Publication-Quality EDA Charts (`capstone_baseline.ipynb`)
+
+1. **Figure 1: Portfolio Cumulative Return vs. S&P 500 (Line Chart)**
+   - *Rationale:* Time-series comparison requires a line chart. Normalised both series to 1.0 on start date for valid comparison. Portfolio returned **+17.48%** vs S&P 500 **+16.64%** (alpha: +0.84%).
+
+2. **Figure 2: Weekly Return Distribution (Histogram + Ranked Bar)**
+   - *Rationale:* Continuous return distribution requires a histogram. Mean weekly return: **+0.33%**, std: **1.58%**. NKE worst at **-1.06%** mean weekly.
+
+3. **Figure 3: Sector P&L Breakdown (Grouped Bar)**
+   - *Rationale:* Paired comparison (invested vs P&L) across discrete sectors. Technology leads at **+85.5% return** on $28.9K invested. Consumer lags at **+11.5%** despite $23.2K allocation.
+
+4. **Figure 4: Daily Return Correlation Matrix (Heatmap)**
+   - *Rationale:* Multivariate structure between 15 stocks. CVX ↔ XOM most correlated (**r = 0.84**) — concentrated energy risk. GOOGL ↔ CVX best natural hedge (**r = -0.24**).
+
+5. **Figure 5: Annualised Volatility Ranking (Horizontal Bar)**
+   - *Rationale:* Ranked single-metric comparison. NVDA most volatile (**37.9%**); NKE second (**36.5%**) with *negative* returns — worst risk/reward in portfolio.
+
+### 4. Naive Baseline (Template Report Generator)
+A pure Python template-string function with **zero AI/LLM** — the "floor to beat":
+- **Scores 9/25** on analyst usefulness (data accuracy: 5/5, narrative quality: 1/5, contextual awareness: 0/5)
+- **Key weakness:** Cannot write narrative — outputs literal `"Performance was POSITIVE / NEGATIVE this week."`
+- **Target:** Capstone LLM layer aims for ≥ 20/25 by adding Gemini-generated narrative + web context
+
+### 5. Key Portfolio Findings
+| Metric | Value |
+|---|---|
+| Total Invested | \$87,475 |
+| Current Value | \$135,445 |
+| Net P&L (all-time) | **+\$47,970 (+54.84%)** |
+| Best holding | GOOGL **+153.6%** |
+| Worst holding | NKE **-62.0%** |
+| 1-Year Alpha vs S&P 500 | **+0.84%** |
+
+---
+
 ## 🛠️ Setup & Execution Instructions
 
 ### 1. Environment Setup
@@ -176,9 +246,9 @@ Activate the virtual environment:
 .\.venv\Scripts\Activate.ps1
 ```
 
-Install all dependencies:
+Install all dependencies (use `python.exe -m pip` if the pip launcher is broken):
 ```powershell
-pip install python-dotenv pydantic google-genai jupyterlab ipykernel huggingface_hub kaggle pandas numpy scikit-learn matplotlib seaborn
+.\.venv\Scripts\python.exe -m pip install python-dotenv pydantic google-genai jupyterlab ipykernel huggingface_hub kaggle pandas numpy scikit-learn matplotlib seaborn yfinance
 ```
 
 ### 2. Environment Variables
@@ -196,3 +266,5 @@ GEMINI_API_KEY=your_gemini_api_key_here
   Open `math_behind_ml.ipynb`, select **`Python (.venv)`** kernel, and click **Run All**.
 * **Gate I1 Notebook (EDA & Visualization):**
   Open `eda_data_story.ipynb`, select **`Python (.venv)`** kernel, and click **Run All**.
+* **Gate M2.1 Notebook (Capstone Baseline):**
+  Open `capstone_baseline.ipynb`, select **`Python (.venv)`** kernel, and click **Run All**. Requires internet connection for `yfinance` data fetch.
